@@ -1,22 +1,39 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
   const isHomePage = location.pathname === "/";
 
+  useEffect(() => {
+    const handleScrolling = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener("scroll", handleScrolling);
+
+    return () => {
+      window.removeEventListener("scroll", handleScrolling);
+    };
+  }, []);
+
   const scrollToSection = (sectionId: string) => {
-    if (!isHomePage) return;
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
+      setIsOpen(false);
     }
   };
 
   return (
-    <nav className="fixed w-full bg-white/90 backdrop-blur-sm z-50">
+    <nav
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+        isScrolled ? "bg-white shadow-md" : "bg-transparent"
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
@@ -49,7 +66,7 @@ const Navbar = () => {
                   </Link>
                   <button
                     onClick={() => scrollToSection("contact")}
-                    className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800"
+                    className="text-white px-4 py-2 bg-gray-600 backdrop-blur-sm rounded-md hover:bg-gray-800"
                   >
                     Contact Us
                   </button>
@@ -68,12 +85,12 @@ const Navbar = () => {
                   >
                     About
                   </Link>
-                  <Link
-                    to="/#contact"
-                    className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800"
+                  <button
+                    onClick={() => scrollToSection("contact")}
+                    className="text-white px-4 py-2 bg-gray-600 backdrop-blur-sm rounded-md hover:bg-gray-800"
                   >
                     Contact Us
-                  </Link>
+                  </button>
                 </>
               )}
             </div>
@@ -125,7 +142,7 @@ const Navbar = () => {
                     scrollToSection("contact");
                     setIsOpen(false);
                   }}
-                  className="block bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 mx-2 w-full text-left"
+                  className="block bg-gray-600 backdrop-blur-sm text-white px-4 py-2 rounded-md hover:bg-gray-800 mx-2 w-full text-left"
                 >
                   Contact Us
                 </button>
@@ -144,12 +161,12 @@ const Navbar = () => {
                 >
                   About
                 </Link>
-                <Link
-                  to="/#contact"
-                  className="block bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 mx-2"
+                <button
+                  onClick={() => scrollToSection("contact")}
+                  className="text-white px-4 py-2 bg-gray-600 backdrop-blur-sm rounded-md hover:bg-gray-800"
                 >
                   Contact Us
-                </Link>
+                </button>
               </>
             )}
           </div>
