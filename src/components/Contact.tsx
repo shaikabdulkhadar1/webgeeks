@@ -27,15 +27,15 @@ const Contact = () => {
 
     try {
       await emailjs.send(
-        "service_77t3uhb",
-        "template_f1ntz3h",
+        "service_oks2a0w",
+        "template_c5ecdf9",
         {
           from_name: formData.name,
           from_email: formData.email,
           message: formData.message,
           to_name: "WebGeeks",
         },
-        "AIG2npBq2yk0rufs8"
+        "t2hKlSrArN4BN4OdK"
       );
 
       toast.success("Message sent successfully!");
